@@ -4,8 +4,8 @@ import pandas as pd
 from sqlalchemy import create_engine
 import logging
 
-def getInfo(ticker: str):
-    """getInfo creates a Ticker object, then returns a pandas df of all the available info
+def get_info(ticker: str):
+    """get_info creates a Ticker object, then returns a pandas df of all the available info
             
         Parameters:
                 ticker: String
@@ -31,8 +31,8 @@ def getInfo(ticker: str):
     return df
 
 
-def dictToDF(dictionary: dict):
-    """The dictToDF method takes in a dictionary and returns a Pandas DataFrame
+def dict_to_df(dictionary: dict):
+    """The dict_to_df method takes in a dictionary and returns a Pandas DataFrame
     
         Parameters:
                 ticker: String
@@ -61,9 +61,9 @@ def dictToDF(dictionary: dict):
     return df
 
 
-def generalInfo(ticker: str):
+def general_info(ticker: str):
     """
-    The generalInfo method takes in any Ticker and returns the general info associated with that ticker
+    The general_info method takes in any Ticker and returns the general info associated with that ticker
     
         Parameters:
                 ticker: String
@@ -83,13 +83,13 @@ def generalInfo(ticker: str):
             if i == key:
                 general_info[key] = info[i]
                 
-    general = dictToDF(general_info)
+    general = dict_to_df(general_info)
     
     return general
 
 
-def getFinancials(ticker: str):
-    """getFinancials returns a dataframe with a lot of useful financial information
+def get_financials(ticker: str):
+    """get_financials returns a dataframe with a lot of useful financial information
     
         Parameters:
                 ticker: String
@@ -105,8 +105,8 @@ def getFinancials(ticker: str):
     return pd.concat([bs,cf,fn])
 
 
-def toSQL(engine, tableName, df):
-    """toSQL creates a table in a MySQL server to store a given Pandas DataFrame
+def table_in_sql(engine, tableName, df):
+    """table_in_sql creates a table in a MySQL server to store a given Pandas DataFrame
 
         Parameters:
                 engine: A SQL Engine to connect to MySQL server
@@ -128,8 +128,8 @@ def toSQL(engine, tableName, df):
         dbConnection.close()
 
 
-def getHistoricPrice(ticker: str):
-    """getHistoricPrice returns a dataframe with the historic stock price of the given ticker
+def get_historic_price(ticker: str):
+    """get_historic_price returns a dataframe with the historic stock price of the given ticker
     
         Parameters:
                 ticker: String
@@ -144,8 +144,8 @@ def getHistoricPrice(ticker: str):
     return df
 
 
-def getDividends(ticker: str):
-    """getDividends returns a dataframe with the all the dividends paid out for the given ticker
+def get_dividends(ticker: str):
+    """get_dividends returns a dataframe with the all the dividends paid out for the given ticker
     
         Parameters:
                 ticker: String
@@ -174,38 +174,38 @@ if __name__ == "__main__":
 
     if choice == 1:
         tick = str(input("For which ticker?\n")).upper()
-        all_info = getInfo(tick)
+        all_info = get_info(tick)
         tableName = "{} Info".format(tick)
 
-        toSQL(sqlEngine, tableName, all_info)
+        table_in_sql(sqlEngine, tableName, all_info)
 
     elif choice == 2:
         tick = str(input("For which ticker?\n")).upper()
-        fin_info = getFinancials(tick)
+        fin_info = get_financials(tick)
         tableName = "{} Financial Info".format(tick)
 
-        toSQL(sqlEngine, tableName, fin_info)
+        table_in_sql(sqlEngine, tableName, fin_info)
 
     elif choice == 3:
         tick = str(input("For which ticker?\n")).upper()
-        gen_info = generalInfo(tick)
+        gen_info = general_info(tick)
         tableName = "{} General Info".format(tick)
 
-        toSQL(sqlEngine, tableName, gen_info)
+        table_in_sql(sqlEngine, tableName, gen_info)
 
     elif choice == 4:
         tick = str(input("For which ticker?\n")).upper()
-        his_price = getHistoricPrice(tick)
+        his_price = get_historic_price(tick)
         tableName = "{} Historic Price".format(tick)
 
-        toSQL(sqlEngine, tableName, his_price)
+        table_in_sql(sqlEngine, tableName, his_price)
 
     elif choice == 5:
         tick = str(input("For which ticker?\n")).upper()
-        dividends = getDividends(tick)
+        dividends = get_dividends(tick)
         tableName = "{} Dividends".format(tick)
 
-        toSQL(sqlEngine, tableName, dividends)
+        table_in_sql(sqlEngine, tableName, dividends)
 
     else:
         raise Exception()
