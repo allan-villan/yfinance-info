@@ -119,9 +119,9 @@ def toSQL(engine, tableName, df):
     try:
         df.to_sql(tableName, dbConnection)
     except ValueError as vx:
-        print(vx)
+        logging.info(vx)
     except Exception as ex:   
-        print(ex)
+        logging.info(ex)
     else:
         print("Table %s created successfully."%tableName);   
     finally:
